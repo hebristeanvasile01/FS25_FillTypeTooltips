@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<modDesc descVersion="115">
+    <author>FS Modding</author>
+    <version>1.0.0.0</version>
+    <title>
+        <en>Fill Type Tooltips</en>
+        <de>Fülltyp Tooltips</de>
+        <fr>Infobulles Des Types De Remplissage</fr>
+    </title>
+    <description>
+        <en><![CDATA[In the shop, trailers and tools only show small icons for the fill types they can carry, without any text. With this mod, hover the mouse over an icon and a small tooltip shows the name of the fill type.
+
+- Works in the shop and in the other menus that show fill type icons
+- The names come from the game, so they appear in your game language
+- No keys, no settings: just hover
+
+Multiplayer supported.
+Languages: English, German, French.]]></en>
+        <de><![CDATA[Im Shop zeigen Anhänger und Geräte nur kleine Symbole für die Fülltypen, die sie transportieren können, ohne Text. Mit diesem Mod fährst du mit der Maus über ein Symbol und ein kleiner Tooltip zeigt den Namen des Fülltyps.
+
+- Funktioniert im Shop und in den anderen Menüs mit Fülltyp Symbolen
+- Die Namen kommen aus dem Spiel und erscheinen daher in deiner Spielsprache
+- Keine Tasten, keine Einstellungen: einfach mit der Maus darüberfahren
+
+Mehrspieler unterstützt.
+Sprachen: Englisch, Deutsch, Französisch.]]></de>
+        <fr><![CDATA[Dans la boutique, les remorques et les outils n'affichent que de petites icônes pour les types de remplissage qu'ils peuvent transporter, sans texte. Avec ce mod, passez la souris sur une icône et une petite infobulle affiche le nom du type de remplissage.
+
+- Fonctionne dans la boutique et dans les autres menus qui affichent des icônes de remplissage
+- Les noms viennent du jeu et s'affichent donc dans la langue de votre jeu
+- Aucune touche, aucun réglage : il suffit de survoler
+
+Multijoueur pris en charge.
+Langues : anglais, allemand, français.]]></fr>
+    </description>
+    <iconFilename>icon_FillTypeTooltips.dds</iconFilename>
+    <multiplayer supported="true"/>
+    <extraSourceFiles>
+        <sourceFile filename="filltypetooltips.lua"/>
+    </extraSourceFiles>
+</modDesc>
