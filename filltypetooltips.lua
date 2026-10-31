@@ -6,7 +6,7 @@ FillTypeTooltips = {}
 FillTypeTooltips.TEXT_SIZE = 0.013
 FillTypeTooltips.PADDING = 0.004
 
-FillTypeTooltips.lookup = nil      -- [string] = fill type title
+FillTypeTooltips.lookup = nil      -- built on first use
 FillTypeTooltips.mouseX = 0
 FillTypeTooltips.mouseY = 0
 FillTypeTooltips.hovered = nil
@@ -26,16 +26,25 @@ local function token(value)
 end
 
 function FillTypeTooltips:buildLookup()
-    self.lookup = {}
+    self.byName, self.byFile = {}, {}
+    self.lookup = true
     if g_fillTypeManager == nil then return end
     local count = 0
     for _, fillType in ipairs(g_fillTypeManager:getFillTypes()) do
         local title = fillType.title
         if title ~= nil and title ~= "" and fillType.name ~= "UNKNOWN" then
-            self.lookup[string.lower(fillType.name)] = title
-            if fillType.hudOverlayFilename ~= nil and fillType.hudOverlayFilename ~= "" then
-                self.lookup[string.lower(fillType.hudOverlayFilename)] = title
-                self.lookup[token(fillType.hudOverlayFilename)] = title
+            self.byName[string.lower(fillType.name)] = title
+            local file = fillType.hudOverlayFilename
+            if file ~= nil and file ~= "" then
+                -- several fill types can share one icon: keep them all
+                for _, key in ipairs({ string.lower(file), token(file) }) do
+                    local list = self.byFile[key]
+                    if list == nil then
+                        list = {}
+                        self.byFile[key] = list
+                    end
+                    table.insert(list, { name = string.lower(fillType.name), title = title })
+                end
             end
             count = count + 1
         end
@@ -46,8 +55,20 @@ end
 function FillTypeTooltips:titleFor(value)
     if type(value) ~= "string" or value == "" then return nil end
     if self.lookup == nil then self:buildLookup() end
-    local lower = string.lower(value)
-    return self.lookup[lower] or self.lookup[token(value)]
+    local t = token(value)
+    -- 1) the icon is named after its fill type (hud_fill_fertilizer -> FERTILIZER): that one wins
+    if self.byName[t] ~= nil then return self.byName[t] end
+    -- 2) otherwise the fill types that use this icon file
+    local list = self.byFile[string.lower(value)] or self.byFile[t]
+    if list == nil then return nil end
+    if #list == 1 then return list[1].title end
+    for _, e in ipairs(list) do
+        if e.name == t then return e.title end
+    end
+    -- shared icon: show every fill type that uses it
+    local titles = {}
+    for _, e in ipairs(list) do table.insert(titles, e.title) end
+    return table.concat(titles, " / ")
 end
 
 -- ---------------------------------------------------------------- tag icons when the menu sets their image
